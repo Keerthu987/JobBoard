@@ -2,26 +2,30 @@ import React, { useEffect, useState } from 'react'
 import JobPosting from './Components/JobPosting';
 import './App.css'
 
-const ITEMS_PER_PAGE = 6;
+const ITEMS_PER_PAGE = 10;
 const API_ENDPOINT = "https://jsonfakery.com/jobs";
 
 const App = () => {
   const [items, setItems] = useState([]);
   const [fetchingDetails, setFetchingDetails] = useState(false);
-  const [currentPage, setCurrentPage] = useState(0);
+  // const [currentPage, setCurrentPage] = useState(0);
 
-  async function fetchItems(page) {
+  async function fetchItems() {
     setFetchingDetails(true);
     const res = await fetch(`${API_ENDPOINT}/random/${ITEMS_PER_PAGE}`);
     const jobs = await res.json();
+
     setItems(prev => [...prev, ...jobs]);
+    // console.log(items)
     setFetchingDetails(false);
   }
-
+console.log(items)
   useEffect(() => {
-    fetchItems(currentPage);
-  }, [currentPage]);
-
+    fetchItems();
+  }, []);
+// const startIndex = currentPage * ITEMS_PER_PAGE;
+//   const endIndex = startIndex + ITEMS_PER_PAGE;
+//   const currentItems = items.slice(startIndex, endIndex);
   return (
     <div className="custom-app">
       <h1 className="custom-title">Job Board</h1>
@@ -32,14 +36,14 @@ const App = () => {
         <div>
           <div className="custom-items" role="list">
             {items.map((item, index) => (
-              <JobPosting key={`${currentPage}-${item.id || index}`} {...item} />
+              <JobPosting key={index} {...item} />
             ))}
           </div>
 
           <button
             className="custom-load-more-button"
             disabled={fetchingDetails}
-            onClick={() => setCurrentPage(prev => prev + 1)}
+            onClick={fetchItems}
           >
             {fetchingDetails ? "Loading..." : "Load more jobs"}
           </button>
@@ -50,3 +54,4 @@ const App = () => {
 }
 
 export default App;
+
