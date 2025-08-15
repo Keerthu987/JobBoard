@@ -1,7 +1,7 @@
 import React from 'react'
 
 const JobPosting = ({url,company,created_at,title}) => {
-    const formattedTime= new Date(created_at*1000)
+    const formattedTime= new Date(created_at)
 
   return (
     <div className='custom-post' role='list-item'>
@@ -24,3 +24,5 @@ const JobPosting = ({url,company,created_at,title}) => {
 }
 
 export default JobPosting
+
+
